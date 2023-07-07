@@ -8,6 +8,7 @@ public class ItemTween : MonoBehaviour
     public MoveDirection direction;
     public Scale scale;
     public Fade fade;
+    public Ease ease;
 
     public float tweenTime;
 
@@ -17,12 +18,19 @@ public class ItemTween : MonoBehaviour
     private Vector3 tweenPosition;
 
 
-    private void Start()
+    //Get Actual Rectpositions of the element in the Canvas
+    private void OnEnable()
     {
         actualPosition = (transform as RectTransform).anchoredPosition;
         actualScale = (transform as RectTransform).localScale;
 
         Animate();
+    }
+
+    private void OnDisable()
+    {
+        (transform as RectTransform).anchoredPosition = actualPosition;
+        (transform as RectTransform).localScale = actualScale; 
     }
 
     private void Animate()
@@ -43,6 +51,7 @@ public class ItemTween : MonoBehaviour
         }
     }
 
+    //UI item direction - specified in the inspector
     private void MoveUIitem()
     {
         switch(direction)
@@ -66,11 +75,12 @@ public class ItemTween : MonoBehaviour
 
         (transform as RectTransform).localPosition = (transform as RectTransform).localPosition + tweenPosition;
 
-        (transform as RectTransform).DOAnchorPos(actualPosition, tweenTime).SetEase(Ease.Linear);
+        (transform as RectTransform).DOAnchorPos(actualPosition, tweenTime).SetEase(ease);
     }
 
 
     float from;
+    //UI item scale - in and out scaling
     private void ScaleUIitem()
     {
         switch(scale)
@@ -85,10 +95,11 @@ public class ItemTween : MonoBehaviour
         }
 
         transform.localScale = Vector3.one * from;
-        (transform as RectTransform).DOScale(actualScale, tweenTime).SetEase(Ease.Linear);
+        (transform as RectTransform).DOScale(actualScale, tweenTime).SetEase(ease);
     }
 
     int fadeFrom, fadeTo;
+    //UI item fade - fade in and out transitions
     private void FadeUIitem()
     {
 
@@ -109,7 +120,7 @@ public class ItemTween : MonoBehaviour
             gameObject.AddComponent<CanvasGroup>();
 
         gameObject.GetComponent<CanvasGroup>().alpha = fadeFrom;
-        gameObject.GetComponent<CanvasGroup>().DOFade(fadeTo, tweenTime).SetEase(Ease.Linear);
+        gameObject.GetComponent<CanvasGroup>().DOFade(fadeTo, tweenTime).SetEase(ease);
     }
 }
 
