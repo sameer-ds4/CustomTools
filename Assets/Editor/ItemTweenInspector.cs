@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,6 +27,11 @@ public class ItemTweenInspector : Editor
         GUILayout.BeginHorizontal();
         GUILayout.Label("Tween Type");
         itemTween.tweenType = (TweenType)EditorGUILayout.EnumPopup(itemTween.tweenType, GUILayout.Width(250));
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Ease Type");
+        itemTween.ease = (Ease)EditorGUILayout.EnumPopup(itemTween.ease, GUILayout.Width(250));
         GUILayout.EndHorizontal();
 
         switch(itemTween.tweenType)
