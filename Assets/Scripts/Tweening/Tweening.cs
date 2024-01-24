@@ -23,7 +23,7 @@ public static class Tweening
         obj_tween.SetActive(true);
         
         obj_tween.transform.localScale = startScale;
-        obj_tween.transform.DOScale(maxScale, timeDuration).SetEase(Ease.Linear);
+        obj_tween.transform.DOScale(maxScale, timeDuration).SetEase(Ease.OutCirc);
     }
 
 
@@ -82,7 +82,7 @@ public static class Tweening
     public static void TweenPunch(GameObject obj_tween, float timeduration, Vector3 punch)
     {
         obj_tween.transform.DOPunchPosition(punch, timeduration);
-    }
+    } 
 
     // Fade IN tween for fading and turning off UI element
     public static void AlphaFadeIn(GameObject obj_tween, float timeduration)
@@ -119,7 +119,7 @@ public static class Tweening
     public static void BubbleOut(GameObject obj_tween, float duration, Vector3 maxScale)
     {
         (obj_tween.transform as RectTransform).localScale = Vector3.one;
-        (obj_tween.transform as RectTransform).DOScale(maxScale, duration / 2)
+        (obj_tween.transform as RectTransform).DOScale(maxScale, duration / 2).SetEase(Ease.InExpo)
             .OnComplete(() => {
                 (obj_tween.transform as RectTransform).DOScale(Vector3.one, duration / 2);
             });
@@ -129,9 +129,27 @@ public static class Tweening
     public static void BubbleOut_gameobject(GameObject obj_tween, float duration, Vector3 maxScale, Vector3 normScale)
     {
         obj_tween.transform.localScale = normScale;
-        obj_tween.transform.DOScale(maxScale, duration / 2)
+        obj_tween.transform.DOScale(maxScale, duration / 2).SetEase(Ease.InCirc)
             .OnComplete(() => {
                 obj_tween.transform.DOScale(normScale, duration / 2);
             });
+    }
+
+    public static void Rotate_gameobject(GameObject obj_tween, float duration, Vector3 startPosition, Vector3 endPosition)
+    {
+        obj_tween.transform.position = startPosition;
+        obj_tween.transform.DORotate(endPosition, duration).SetEase(Ease.Linear);
+    }
+
+    public static void Scale_gameobject(GameObject obj_tween, float duration, Vector3 startScale, Vector3 endScale)
+    {
+        obj_tween.transform.localScale = startScale;
+        obj_tween.transform.DOScale(endScale, duration);
+    }
+
+        public static void ScaleChange(GameObject obj_tween, float duration, Vector3 startScale, Vector3 endScale)
+    {
+        (obj_tween.transform as RectTransform).localScale = startScale;
+        (obj_tween.transform as RectTransform).DOScale(endScale, duration);
     }
 }
